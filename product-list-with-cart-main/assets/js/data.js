@@ -1,8 +1,26 @@
 let data = [];
 
-fetch("./data.json")
-  .then((res) => res.json())
-  .then((data) => {
+async function getData() {
+  try {
+    const res = await fetch("./data.json");
+    const data = await res.json();
     console.log(data);
-  })
-  .catch((err) => console.log(err));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+window.addEventListener("DOMContentLoaded", (event) => {
+  getData();
+});
+
+function drawProducts() {
+  const products = document.querySelector(".products");
+
+  data.forEach((product) => {
+
+    
+
+
+  });
+}
