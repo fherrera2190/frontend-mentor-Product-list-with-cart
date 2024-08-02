@@ -1,4 +1,11 @@
 let data = [];
+let cart = [];
+function drawCart() {
+
+  
+
+  const cart = document.querySelector(".cart");
+}
 
 function drawProducts() {
   const products = document.querySelector(".products");
