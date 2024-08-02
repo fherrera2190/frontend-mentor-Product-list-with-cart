@@ -8,7 +8,7 @@
   --Rose400: hsl(7, 20%, 60%);
   --Rose500: hsl(12, 20%, 44%);
   --Rose900: hsl(14, 65%, 9%);
-  --card-width: 250px;
+  --card-width: 200px;
 
   & h1,
   h2,
@@ -19,7 +19,8 @@
     font-family: "Red Hat Display", sans-serif;
   }
 
-  & p {
+  & p,
+  figcaption {
     font-family: "Red Hat Text SemiBold", sans-serif;
   }
 
@@ -52,8 +53,8 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  max-width: var(--card-width);
   border-radius: 10px;
+  max-width: var(--card-width);
   white-space: nowrap;
   overflow: hidden;
   & .card__header {
@@ -65,15 +66,23 @@ body {
     }
     & .card__button {
       position: absolute;
-      bottom: -12px;
-      left: 50%;
-      bottom: -10%; 
+      bottom: -10px;
+      width: 140px;
+      height: 38px;
+      right: calc(50% - 70px);
       & button {
+        height: 100%;
         display: flex;
-        padding: 5px 15px;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        width: 100%;
         border: 1px solid var(--Rose300);
-        border-radius: 15px;
+        border-radius: 20px;
         cursor: pointer;
+        & img {
+          width: 20px;
+        }
       }
     }
   }
@@ -97,19 +106,48 @@ body {
 }
 
 .cart {
-  margin-inline: auto;
   white-space: nowrap;
-  overflow: hidden;
+  max-width: 250px;
+  padding: 10px;
+  border-radius: 15px;
   & h2 {
     align-self: self-start;
     color: var(--Red);
   }
-  & p small {
+
+  & figure {
+    margin-top: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  & figcaption {
     color: var(--Rose500);
   }
 }
 
-@media (width <= 375px) {
+main {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  width: 80%;
+  gap: 30px;
+}
+
+section {
+  margin-top: 50px;
+  max-width: 1024px;
+  & article {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+}
+
+@media (width <= 768px) {
   main {
     display: flex;
     flex-direction: column;
@@ -123,31 +161,7 @@ body {
   .products {
     margin-top: 20px;
   }
-}
-/* 
-.cualquiera {
-  align-content: center;
-}
-.cuadrado {
-  width: 100px;
-  height: 100px;
-  background-color: red;
-  margin-inline: auto;
-} */
-
-.container {
-  position: relative;
-  width: 300px;  /* ajusta el ancho según sea necesario */
-  height: 300px; /* ajusta la altura según sea necesario */
-  border: 1px solid black;
-  overflow: visible; /* permite que el contenido desborde los límites del contenedor */
-}
-
-.half-out-button {
-  position: absolute;
-  left: 50%;
-  bottom: -50%;  /* Ajusta la mitad de la altura del botón */
-  transform: translate(-50%, 50%); /* Centra el botón horizontalmente y ajusta verticalmente */
-  padding: 10px 20px;
-  /* Otros estilos para el botón */
+  .card {
+    max-width: 100%;
+  }
 }

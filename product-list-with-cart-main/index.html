@@ -1,62 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- displays site properly based on user's device -->
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="./assets/images/favicon-32x32.png"
-    />
-    <link rel="stylesheet" href="./assets/css/style.css" />
-    <title>Frontend Mentor | Product list with cart</title>
-  </head>
-  <body>
-    <main>
-      <section>
-        <h1>Desserts</h1>
-        <article class="products">
-          <div class="card">
-            <div class="card__header">
-              <img
-                src="./assets/images/image-waffle-mobile.jpg"
-                alt="product image"
-                class="card__image"
-              />
-              <div class="card__button">
-                <button>                
-                  <img
-                  src="./assets/images/icon-add-to-cart.svg"
-                  alt="cart icon"
-                />
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- displays site properly based on user's device -->
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/images/favicon-32x32.png" />
+  <link rel="stylesheet" href="./assets/css/style.css" />
+  <title>Frontend Mentor | Product list with cart</title>
+</head>
+
+<body>
+  <main>
+    <section>
+      <h1>Desserts</h1>
+      <article class="products">
+        <!-- <div class="card">
+          <div class="card__header">
+            <picture>
+              <source srcset="./assets/images/image-waffle-desktop.jpg" media="(min-width: 769px)">
+              <source srcset="./assets/images/image-waffle-tablet.jpg"
+                media="(max-width: 768px) and (min-width: 376px)">
+              <img src="./assets/images/image-waffle-mobile.jpg" alt="product image" class="card__image" />
+            </picture>
+            <div class="card__button">
+              <button>
+                <img src="./assets/images/icon-add-to-cart.svg" alt="cart icon" />
                 <p class="card__text">Add to cart</p>
               </button>
-              </div>
-            </div>
-            <div class="card__body">
-              <p><small class="card__category">Waffle</small></p>
-              <h5 class="card__name">Waffle with Berries</h6>
-            </div>
-            <div class="card__footer">
-              <h5 class="card__price"><b>$6.50</b></h5>
             </div>
           </div>
-        </article>
-      </section>
-      <section class="cart">
+          <div class="card__body">
+            <p><small class="card__category">Waffle</small></p>
+            <h5 class="card__name">Waffle with Berries</h6>
+          </div>
+          <div class="card__footer">
+            <h5 class="card__price"><b>$6.50</b></h5>
+          </div>
+        </div> -->
+      </article>
+    </section>
+    <section>
+      <div class="cart">
         <h2><b>You Cart (0)</b></h2>
-        <img src="./assets/images/illustration-empty-cart.svg" alt="" />
-        <p><small>your added items will appear here</small></p>
-      </section>
-    </main>
-    <div class="container">
-      <button class="half-out-button">Botón</button>
-  </div>
-    <!-- <div class="cualquiera">
-      <div class="cuadrado"></div>
-    </div> -->
-    <script src="./assets/js/data.js"></script>
-  </body>
+        <figure>
+          <img src="./assets/images/illustration-empty-cart.svg" alt="" />
+          <figcaption>
+            your added items will appear here
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+  </main>
+
+  <script src="./assets/js/data.js"></script>
+</body>
+
 </html>
