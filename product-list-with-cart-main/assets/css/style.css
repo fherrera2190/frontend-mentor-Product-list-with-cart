@@ -3,7 +3,7 @@
   --Green: hsl(159, 69%, 38%);
 
   --Rose50: hsl(20, 50%, 98%);
-  --Rose100: #f4edeb;
+  --Rose100: hsl(13, 31%, 94%);
   --Rose300: hsl(14, 25%, 72%);
   --Rose400: hsl(7, 20%, 60%);
   --Rose500: hsl(12, 20%, 44%);
@@ -48,6 +48,12 @@ body {
   min-height: 100vh;
 }
 
+main {
+  display: flex;
+  justify-content: center;
+  margin: 0 auto;
+  width: 90%;
+}
 .card {
   display: flex;
   flex-direction: column;
@@ -101,23 +107,37 @@ body {
   }
   & .card__footer {
     width: 100%;
-    color: #c73b0f;
+    color: var(--Red);
   }
 }
 
 .cart-section {
-  padding: 10px;
-}
-.cart {
-  white-space: nowrap;
-  max-width: 250px;
-  border-radius: 15px;
+  padding: 20px;
+  width: 100%;
+  max-width: 400px;
+  background-color: var(--Rose50);
+  border-radius: 10px;
+  height: min-content;
   & h3 {
-    align-self: self-start;
+    white-space: nowrap;
     color: var(--Red);
   }
+  & .cart-total {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    & small {
+      color: var(--Rose500);
+    }
+  }
+}
+
+.cart-empty-product {
+  white-space: nowrap;
+  max-width: 250px;
 
   & figure {
+    width: 100%;
     margin-top: 15px;
     display: flex;
     flex-direction: column;
@@ -128,13 +148,68 @@ body {
     color: var(--Rose500);
   }
 }
-
-main {
+.cart {
   display: flex;
   justify-content: center;
-  margin: 0 auto;
-  width: 90%;
+
+  & .delivery {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--Rose100);
+    padding: 10px 20px;
+    gap: 10px;
+    color: var(--Rose500);
+    & b {
+      color: var(--Rose900);
+    }
+  }
+  & .confirm-button {
+    width: 100%;
+    text-align: center;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    background-color: var(--Red);
+    color: var(--Rose100);
+  }
 }
+
+.product-select {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--Rose300);
+  & .product-detail {
+    & .product-name {
+      color: var(--Rose900);
+    }
+    & .product-total {
+      display: flex;
+      gap: 10px;
+      color: var(--Rose400);
+      margin: 10px 0;
+      & .product-quantity {
+        color: var(--Red);
+      }
+      & .product-price {
+        color: var(--Rose400);
+      }
+      & .product-total-price {
+        color: var(--Rose500);
+      }
+    }
+  }
+
+  & button {
+    position: relative;
+    display: inline-block;
+    padding: 5px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+}
+
 section {
   margin-top: 50px;
   max-width: 900px;
@@ -143,7 +218,6 @@ section {
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-
     gap: 20px;
   }
 }

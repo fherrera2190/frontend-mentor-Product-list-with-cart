@@ -1,10 +1,22 @@
 let data = [];
 let cart = [];
+
+const noProducts = `
+<div class="cart-empty-product">
+          <figure>
+            <img src="./assets/images/illustration-empty-cart.svg" alt="" />
+            <figcaption>
+              <small>your added items will appear here</small>
+            </figcaption>
+          </figure></div>`;
+
 function drawCart() {
-
-  
-
-  const cart = document.querySelector(".cart");
+  const cartSection = document.querySelector(".cart");
+  cartSection.innerHTML = "";
+  console.log(cart)
+  if (cart.length === 0) {
+    cartSection.innerHTML = noProducts;
+  }
 }
 
 function drawProducts() {
@@ -52,4 +64,7 @@ async function getData() {
 
 window.addEventListener("DOMContentLoaded", (event) => {
   getData();
+  // drawCart();
 });
+
+
