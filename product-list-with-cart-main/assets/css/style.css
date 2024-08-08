@@ -51,7 +51,7 @@ body {
 main {
   display: flex;
   justify-content: center;
-  gap: 20px;
+
   margin: 0 auto;
   width: 90%;
 }
@@ -73,10 +73,8 @@ main {
   border-radius: 10px;
   max-width: var(--card-width);
 
-  overflow: hidden;
   & .card__header {
     position: relative;
-
     & img {
       width: 100%;
       border-radius: 10px;
@@ -84,11 +82,11 @@ main {
     & .card__button {
       display: flex;
       justify-content: space-between;
-
+      cursor: pointer;
       & .button__add {
+        cursor: pointer;
         width: 100%;
         border: none;
-        cursor: pointer;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -107,8 +105,8 @@ main {
       background-color: var(--Red);
       color: white;
       & button {
-        width: 16px;
-        height: 16px;
+        width: 30px;
+        padding: 16px;
         background-color: var(--Red);
         cursor: pointer;
         border-radius: 50%;
@@ -164,7 +162,7 @@ main {
 .cart {
   display: flex;
   justify-content: center;
-
+  widows: 100%;
   & .delivery {
     display: flex;
     justify-content: space-between;
