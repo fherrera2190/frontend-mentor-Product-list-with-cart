@@ -1,3 +1,4 @@
+// variables
 let data = [];
 let cart = [];
 const cartSection = document.querySelector(".cart");
@@ -21,7 +22,7 @@ const buttons = (id) => {
   return `<div class="btn_product card__button__quantity"id="button-content-${id}" ><button class="decrement" id="decrement-button-${id}">
         <img src="./assets/images/icon-decrement-quantity.svg" alt="cart icon" />
       </button>
-      <p class="card__text" id="quantity-${id}">${product.quantity}</p>
+      <p class="card__text quantityValue-${id}" >${product.quantity}</p>
       <button class="increment" id="increment-button-${id}">
         <img src="./assets/images/icon-increment-quantity.svg" alt="cart icon" />
       </button></div>`;
@@ -62,14 +63,14 @@ const productCartElement = (id) => {
             <div class="product-detail">
               <h5 class="product-name">${product.name}</h5>
               <div class="product-total">
-                <p class="product-quantity"><small>${quantity}x</small></p>
+                <p class="product-quantity"><small class="quantityValue-${id}">${quantity}x</small></p>
                 <p class="product-price"><small>@ $${product.price}</small></p>
-                <p class="product-total-price"><small>$${
-                  quantity * product.price
-                }</small></p>
+                <p ><small class="product-subtotal-${id}">$${
+    quantity * product.price
+  }</small></p>
               </div>
             </div>
-            <button>
+            <button onclick="removeFromCart(${id})">
               <img
                 src="./assets/images/icon-remove-item.svg"
                 alt="delete icon"
@@ -96,6 +97,29 @@ const totalCart = () => {
           </button>`;
 };
 
+// LOCAL STORAGE
+function saveCartLC() {
+  localStorage.setItem("cart", JSON.stringify(cart));
+}
+function getTotal() {
+  const ids = cart.map((item) => +item.id);
+  let products = data.filter((item) => ids.includes(item.id));
+
+  products = products.map((item) => {
+    item.quantity = existProductOnCart(item.id).quantity;
+    return item;
+  });
+
+  const total = products.reduce(
+    (acc, item) => acc + item.price * item.quantity,
+    0
+  );
+  return total;
+}
+function loadCartLC() {
+  return JSON.parse(localStorage.getItem("cart"));
+}
+
 // CART FUNCTIONS
 function drawCart() {
   cartSection.innerHTML = "";
@@ -116,22 +140,13 @@ function existProductOnCart(id) {
   return cart.find((item) => +item.id === +id);
 }
 
-function addToCart(id) {
-  if (!id) return;
-  if (existCart(id)) {
-    console.log("Entre al updateQuantity");
-    cart = incrementUnit(id);
-    updateQuantity(id);
-  } else {
-    console.log("Entre al updateBUton");
-    cart.push({ id, quantity: 1 });
-    updateButtonContent(id);
-  }
-  saveCartLC();
-}
-
 function removeFromCart(id) {
-  cart = cart.filter((item) => item.id !== id);
+  cart = cart.filter((item) => +item.id !== +id);
+  console.log(cart)
+  updateButtonContent(id);
+  saveCartLC();
+  updateTotalQuantity();
+  drawCart();
 }
 
 function incrementUnit(id) {
@@ -144,23 +159,6 @@ function incrementUnit(id) {
     }
   });
 }
-
-function getTotal() {
-  const ids = cart.map((item) => +item.id);
-  let products = data.filter((item) => ids.includes(item.id));
-
-  products = products.map((item) => {
-    item.quantity = existProductOnCart(item.id).quantity;
-    return item;
-  });
-
-  const total = products.reduce(
-    (acc, item) => acc + item.price * item.quantity,
-    0
-  );
-  return total;
-}
-
 function decrementUnit(id) {
   return cart.map((item) => {
     if (item.id === id) {
@@ -171,6 +169,18 @@ function decrementUnit(id) {
     }
   });
 }
+function addToCart(id) {
+  if (!id) return;
+  if (existCart(id)) {
+    cart = incrementUnit(id);
+    updateProductOrder(id);
+  } else {
+    cart.push({ id, quantity: 1 });
+    updateButtonContent(id);
+    drawCart();
+  }
+  saveCartLC();
+}
 
 function decrementCart(id) {
   const product = existProductOnCart(id);
@@ -178,27 +188,20 @@ function decrementCart(id) {
 
   cart = decrementUnit(id);
 
-  if (product && product.quantity <= 1) {
+  if (product && product.quantity < 1) {
     removeFromCart(id);
-    updateButtonContent(id);
-    drawCart();
-  } else {
-    updateQuantity(id);
+
+    return;
   }
 
+  updateProductOrder(id);
   saveCartLC();
-}
-function saveCartLC() {
-  localStorage.setItem("cart", JSON.stringify(cart));
-}
-
-function loadCartLC() {
-  return JSON.parse(localStorage.getItem("cart"));
 }
 
 function getTotalQuantity() {
   let quatityTotal = 0;
   cart.forEach((item) => (quatityTotal += item.quantity));
+  console.log(quatityTotal);
   return quatityTotal;
 }
 
@@ -212,11 +215,21 @@ function updateButtonContent(id) {
   button.outerHTML = buttons(id);
 }
 
-function updateQuantity(id) {
-  const quantity = document.getElementById(`quantity-${id}`);
-  if (!quantity) return;
+function updateProductOrder(id) {
+  const quantityElements = document.querySelectorAll(`.quantityValue-${id}`);
+  if (quantityElements.length < 1) return;
   const product = existProductOnCart(id);
-  quantity.innerText = product.quantity;
+  quantityElements.forEach((element) => (element.innerText = product.quantity));
+
+  const productInfo = getProductInfo(id);
+
+  const updateSubtotal = document.querySelector(`.product-subtotal-${id}`);
+  updateSubtotal.innerText = `$${+product.quantity * +productInfo.price}`;
+
+  const updateTotal = document.querySelector(".total-price");
+  updateTotal.innerText = `$${getTotal()}`;
+
+  updateTotalQuantity();
 }
 
 function drawProducts() {
@@ -247,8 +260,6 @@ window.addEventListener("load", async (event) => {
   data = await getData();
   drawProducts();
   drawCart();
-  console.log(getTotal());
-
   updateTotalQuantity();
 });
 
@@ -259,14 +270,10 @@ products.addEventListener("click", (e) => {
   ) {
     const id = e.target.id.replace("increment-button-", "");
     addToCart(id);
-    updateTotalQuantity();
-    drawCart();
   }
 
   if (e.target.classList.contains("decrement")) {
     const id = e.target.id.replace("decrement-button-", "");
     decrementCart(id);
-    updateQuantity(id);
-    updateTotalQuantity();
   }
 });
