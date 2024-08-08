@@ -104,6 +104,8 @@ function drawCart() {
       cartSection.innerHTML += productCartElement(item.id);
     });
     cartSection.innerHTML += totalCart();
+  } else {
+    cartSection.innerHTML = noProducts;
   }
 }
 function existCart(id) {
@@ -179,6 +181,7 @@ function decrementCart(id) {
   if (product && product.quantity <= 1) {
     removeFromCart(id);
     updateButtonContent(id);
+    drawCart();
   } else {
     updateQuantity(id);
   }
@@ -193,8 +196,15 @@ function loadCartLC() {
   return JSON.parse(localStorage.getItem("cart"));
 }
 
-function updateOrder(){
-  
+function getTotalQuantity() {
+  let quatityTotal = 0;
+  cart.forEach((item) => (quatityTotal += item.quantity));
+  return quatityTotal;
+}
+
+function updateTotalQuantity() {
+  const totalQuatity = document.querySelector(".total-quantity");
+  totalQuatity.innerText = getTotalQuantity();
 }
 
 function updateButtonContent(id) {
@@ -204,6 +214,7 @@ function updateButtonContent(id) {
 
 function updateQuantity(id) {
   const quantity = document.getElementById(`quantity-${id}`);
+  if (!quantity) return;
   const product = existProductOnCart(id);
   quantity.innerText = product.quantity;
 }
@@ -237,6 +248,8 @@ window.addEventListener("load", async (event) => {
   drawProducts();
   drawCart();
   console.log(getTotal());
+
+  updateTotalQuantity();
 });
 
 products.addEventListener("click", (e) => {
@@ -246,11 +259,14 @@ products.addEventListener("click", (e) => {
   ) {
     const id = e.target.id.replace("increment-button-", "");
     addToCart(id);
+    updateTotalQuantity();
+    drawCart();
   }
 
   if (e.target.classList.contains("decrement")) {
     const id = e.target.id.replace("decrement-button-", "");
     decrementCart(id);
     updateQuantity(id);
+    updateTotalQuantity();
   }
 });
