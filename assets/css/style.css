@@ -75,14 +75,20 @@ main {
 
   & .card__header {
     position: relative;
+    & button {
+      font-weight: bold;
+    }
+
     & img {
       width: 100%;
       border-radius: 10px;
     }
+    & svg {
+      pointer-events: none;
+    }
     & .card__button {
       display: flex;
       justify-content: space-between;
-      cursor: pointer;
       & .button__add {
         cursor: pointer;
         width: 100%;
@@ -91,6 +97,12 @@ main {
         justify-content: center;
         align-items: center;
         gap: 10px;
+      }
+      &:hover {
+        border: 1px solid var(--Red);
+      }
+      &:hover button {
+        color: var(--Red);
       }
     }
 
@@ -101,6 +113,7 @@ main {
       align-items: center;
       background-color: var(--Red);
       color: white;
+
       & button {
         display: flex;
         justify-content: center;
@@ -111,9 +124,12 @@ main {
         border-radius: 50%;
         width: 20px;
         height: 20px;
+
         &:hover {
-          color: var(--Red);
           background-color: white;
+        }
+        &:hover svg path {
+          fill: var(--Red);
         }
       }
     }

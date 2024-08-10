@@ -63,7 +63,7 @@ const productElement = (image, name, category, price, id) => {
     <h5 class="card__name">${name}</h6>
   </div>
   <div class="card__footer">
-    <h5 class="card__price"><b>$${price}</b></h5>
+    <h5 class="card__price"><b>$${parseFloat(price).toFixed(2)}</b></h5>
   </div>
 </div>`
   );
@@ -79,8 +79,8 @@ const productCartElement = (id) => {
               <h5 class="product-name">${product.name}</h5>
               <div class="product-total">
                 <p class="product-quantity"><small class="quantityValue-${id}">${quantity}x</small></p>
-                <p class="product-price"><small>@ $${product.price}</small></p>
-                <p ><small class="product-subtotal-${id}">$${quantity * product.price}</small></p>
+                <p class="product-price"><small>@ $${parseFloat(product.price).toFixed(2)}</small></p>
+                <p ><small class="product-subtotal-${id}">$${parseFloat(quantity * product.price).toFixed(2)}</small></p>
               </div>
             </div>
             <button onclick="removeFromCart(${id})">
