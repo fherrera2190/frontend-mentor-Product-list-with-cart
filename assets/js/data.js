@@ -51,9 +51,12 @@ const productElement = (image, name, category, price, id) => {
   <div class="card__header">
     <picture>
     <source srcset="${image.desktop}" media="(min-width: 769px)">
-    <source srcset="${image.tablet}"
-        media="(max-width: 768px) and (min-width: 376px)">
-      <img src="${image.mobile}" alt="product image" class="card__image" />
+    <source srcset="${
+      image.tablet
+    }" media="(max-width: 768px) and (min-width: 376px)">
+    <img src="${image.mobile}" alt="product image" class="card__image ${
+      existProductOnCart(id) ? "img__select" : ""
+    }" id="image-${id}" />
     </picture>
     ` +
     buttons(id) +
@@ -79,15 +82,16 @@ const productCartElement = (id) => {
               <h5 class="product-name">${product.name}</h5>
               <div class="product-total">
                 <p class="product-quantity"><small class="quantityValue-${id}">${quantity}x</small></p>
-                <p class="product-price"><small>@ $${parseFloat(product.price).toFixed(2)}</small></p>
-                <p ><small class="product-subtotal-${id}">$${parseFloat(quantity * product.price).toFixed(2)}</small></p>
+                <p class="product-price"><small>@ $${parseFloat(
+                  product.price
+                ).toFixed(2)}</small></p>
+                <p ><small class="product-subtotal-${id}">$${parseFloat(
+    quantity * product.price
+  ).toFixed(2)}</small></p>
               </div>
             </div>
-            <button onclick="removeFromCart(${id})">
-              <img
-                src="./assets/images/icon-remove-item.svg"
-                alt="delete icon"
-              />
+            <button onclick="removeFromCart(${id})" class="remove-button">
+              <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" fill="none" viewBox="0 0 10 10"><path fill="#CAAFA7" d="M8.375 9.375 5 6 1.625 9.375l-1-1L4 5 .625 1.625l1-1L5 4 8.375.625l1 1L6 5l3.375 3.375-1 1Z"/></svg>
             </button>
           </div>`;
 };
@@ -127,7 +131,7 @@ function getTotal() {
     (acc, item) => acc + item.price * item.quantity,
     0
   );
-  return total;
+  return parseFloat(total).toFixed(2);
 }
 function loadCartLC() {
   return JSON.parse(localStorage.getItem("cart"));
@@ -153,11 +157,20 @@ function existProductOnCart(id) {
   return cart.find((item) => +item.id === +id);
 }
 
+function updateImageBorder(id) {
+  const image = document.getElementById(`image-${id}`);
+  if (existProductOnCart(id)) {
+    image.classList.add("img__select");
+  } else {
+    image.classList.remove("img__select");
+  }
+}
+
 function removeFromCart(id) {
   cart = cart.filter((item) => +item.id !== +id);
-  console.log(cart);
-  updateButtonContent(id);
   saveCartLC();
+  updateButtonContent(id);
+  updateImageBorder(id);
   updateTotalQuantity();
   drawCart();
 }
@@ -189,7 +202,9 @@ function addToCart(id) {
     updateProductOrder(id);
   } else {
     cart.push({ id, quantity: 1 });
+    updateImageBorder(id)
     updateButtonContent(id);
+    updateTotalQuantity();
     drawCart();
   }
   saveCartLC();
@@ -214,7 +229,6 @@ function decrementCart(id) {
 function getTotalQuantity() {
   let quatityTotal = 0;
   cart.forEach((item) => (quatityTotal += item.quantity));
-  console.log(quatityTotal);
   return quatityTotal;
 }
 
@@ -237,7 +251,9 @@ function updateProductOrder(id) {
   const productInfo = getProductInfo(id);
 
   const updateSubtotal = document.querySelector(`.product-subtotal-${id}`);
-  updateSubtotal.innerText = `$${+product.quantity * +productInfo.price}`;
+  updateSubtotal.innerText = `$${parseFloat(
+    product.quantity * productInfo.price
+  ).toFixed(2)}`;
 
   const updateTotal = document.querySelector(".total-price");
   updateTotal.innerText = `$${getTotal()}`;
