@@ -91,9 +91,6 @@ main {
         justify-content: center;
         align-items: center;
         gap: 10px;
-        & img {
-          width: 20px;
-        }
       }
     }
 
@@ -105,17 +102,18 @@ main {
       background-color: var(--Red);
       color: white;
       & button {
-        width: 30px;
-        padding: 16px;
-        background-color: var(--Red);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: inherit;
         cursor: pointer;
-        border-radius: 50%;
         border: 1px solid white;
-        & img {
-          padding: 2px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+        border-radius: 50%;
+        width: 20px;
+        height: 20px;
+        &:hover {
+          color: var(--Red);
+          background-color: white;
         }
       }
     }
