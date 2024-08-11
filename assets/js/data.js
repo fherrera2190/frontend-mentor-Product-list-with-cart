@@ -145,6 +145,12 @@ const drawOrder = () => {
   orderProducts.innerHTML = orderItems;
 };
 
+function newOrder(){
+  cart = [];
+  saveCartLC();
+  location.href = "./index.html";
+}
+
 function productWithInfo() {
   const ids = cart.map((item) => +item.id);
   let products = data.filter((item) => ids.includes(item.id));
