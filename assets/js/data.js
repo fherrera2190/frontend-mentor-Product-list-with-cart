@@ -81,7 +81,7 @@ const productCartElement = (id) => {
             <div class="product-detail">
               <h5 class="product-name">${product.name}</h5>
               <div class="product-total">
-                <p class="product-quantity"><small class="quantityValue-${id}">${quantity}x</small></p>
+                <p class="product-quantity"><small class="quantityValue-${id}">${quantity}</small><small>x</small></p>
                 <p class="product-price"><small>@ $${parseFloat(
                   product.price
                 ).toFixed(2)}</small></p>
@@ -109,16 +109,43 @@ const totalCart = () => {
               <small>This is a <b>carbon-neutral</b> delivery</small>
             </p>
           </div>
-          <button class="confirm-button" id="confirmOrder">
+          <button class="btn_generic" id="confirmOrder" onclick="buyProducts()">
             Confirm Order
           </button>`;
 };
 
-// LOCAL STORAGE
-function saveCartLC() {
-  localStorage.setItem("cart", JSON.stringify(cart));
-}
-function getTotal() {
+const orderItem = ({ image, name, price, id, quantity }) => {
+  return `
+            <div class="order-product">
+              <img src="${image.thumbnail}" alt="" />
+              <div class="order-info">
+                <h5>${name}</h5>
+                <p>
+                  <small class="quantity-order-product">${quantity}x </small
+                  ><small class="price-order-product">@ ${parseFloat(
+                    price
+                  ).toFixed(2)}</small>
+                </p>
+              </div>
+              <p>$${parseFloat(quantity * price).toFixed(2)}</p>
+            </div>`;
+};
+
+const drawOrder = () => {
+  const orderProducts = document.querySelector("#order-products");
+  let orderItems = "";
+  const products = productWithInfo();
+  products.forEach((product) => {
+    orderItems += orderItem(product);
+  });
+  orderItems += `<p class="order-total">
+              <small class="text-order-total">Order Total</small
+              ><span>$${getTotal()}</span>
+            </p>`;
+  orderProducts.innerHTML = orderItems;
+};
+
+function productWithInfo() {
   const ids = cart.map((item) => +item.id);
   let products = data.filter((item) => ids.includes(item.id));
 
@@ -126,6 +153,15 @@ function getTotal() {
     item.quantity = existProductOnCart(item.id).quantity;
     return item;
   });
+  return products;
+}
+
+// LOCAL STORAGE
+function saveCartLC() {
+  localStorage.setItem("cart", JSON.stringify(cart));
+}
+function getTotal() {
+  const products = productWithInfo();
 
   const total = products.reduce(
     (acc, item) => acc + item.price * item.quantity,
@@ -202,7 +238,7 @@ function addToCart(id) {
     updateProductOrder(id);
   } else {
     cart.push({ id, quantity: 1 });
-    updateImageBorder(id)
+    updateImageBorder(id);
     updateButtonContent(id);
     updateTotalQuantity();
     drawCart();
@@ -283,6 +319,22 @@ async function getData() {
   }
 }
 // END LOADING DATA
+
+function buyProducts() {
+  console.log("buy products");
+
+  if (cart.length < 1) return;
+
+  drawOrder()
+
+  const modal = document.getElementById("modal-order");
+  modal.style.display = "block";
+}
+// window.onclick = function (event) {
+//   if (event.target == modal) {
+//     modal.style.display = "none";
+//   }
+// };
 
 window.addEventListener("load", async (event) => {
   cart = loadCartLC() || [];
